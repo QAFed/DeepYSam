@@ -2,5 +2,6 @@
 import to_requests
 
 def test_get_order():
-    assert to_requests.get_order().status_code == 200
+    track_nt = to_requests.track_order().json()['track']
+    assert to_requests.get_order(track_nt).status_code == 200
 # подробное описание в README
