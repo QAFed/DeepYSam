@@ -1,8 +1,15 @@
+ПО ЗАМЕЧАНИЯМ ПРАВКИ--------------------------------------
+
+Две вариации первого запроса с использованием COUNT
+SELECT cour.login, COUNT("inDelivery") FROM "Couriers" AS cour LEFT OUTER JOIN "Orders" AS ord ON cour.id = ord."courierId" GROUP BY cour.login;
+
+SELECT cour.login, COUNT(CASE WHEN "inDelivery" = True THEN 1 ELSE Null END) FROM "Couriers" AS cour LEFT OUTER JOIN "Orders" AS ord ON cour.id = ord."courierId" GROUP BY cour.login;
+
+------old
 Представь: тебе нужно проверить, отображается ли созданный заказ в базе данных.
 Для этого: выведи список логинов курьеров с количеством их заказов в статусе «В доставке» (поле inDelivery = true). 
 
 SELECT cour.login, SUM(CASE WHEN "inDelivery" = True THEN 1 ELSE 0 END) FROM "Couriers" AS cour LEFT OUTER JOIN "Orders" AS ord ON cour.id = ord."courierId" GROUP BY cour.login;
-
 
 Ты тестируешь статусы заказов. Нужно убедиться, что в базе данных они записываются корректно.
 Для этого: выведи все трекеры заказов и их статусы. 
@@ -19,9 +26,4 @@ SELECT track, (CASE WHEN "inDelivery"=True THEN 1 WHEN "cancelled"=True THEN -1 
 
 SELECT track, (CASE WHEN ("inDelivery"=True AND "cancelled"=False AND "finished"=False) THEN 1 WHEN ("inDelivery"=False AND "cancelled"=True AND "finished"=False) THEN -1 WHEN ("inDelivery"=False AND "cancelled"=False AND "finished"=True) THEN 2 ELSE 0 END) AS status FROM "Orders";
 
-ПО ЗАМЕЧАНИЯМ ПРАВКИ--------------------------------------
 
-Две вариации первого запроса с использованием COUNT
-SELECT cour.login, COUNT("inDelivery") FROM "Couriers" AS cour LEFT OUTER JOIN "Orders" AS ord ON cour.id = ord."courierId" GROUP BY cour.login;
-
-SELECT cour.login, COUNT(CASE WHEN "inDelivery" = True THEN 1 ELSE Null END) FROM "Couriers" AS cour LEFT OUTER JOIN "Orders" AS ord ON cour.id = ord."courierId" GROUP BY cour.login;
